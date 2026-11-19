@@ -1,0 +1,48 @@
+<div>
+  <section>
+    <h2>Reservar Entradas</h2>
+    <p>Selecciona una función y completa tus datos. Se generará un código de reserva (ej. BUCB-XXXX).</p>
+    <form (ngSubmit)="reservar()" #resForm="ngForm" style="max-width:620px;">
+      <label>Función
+        <select name="id_funcion" [(ngModel)]="form.id_funcion" required>
+          <option disabled value="">Selecciona una función</option>
+          <option *ngFor="let f of funciones" [value]="fId(f)">
+            #{{ fId(f) }} - {{ f.titulo || f.obra?.titulo || ('Obra ' + f.id_obra) }} | {{ fmt(f.fecha_hora) }} | {{ f.lugar || 'Lugar por confirmar' }} ({{ f.estado }})
+          </option>
+        </select>
+      </label>
+      <label>Cantidad de entradas<input type="number" min="1" max="10" name="cantidad_entradas" [(ngModel)]="form.cantidad_entradas" required></label>
+      <label>CI<input type="text" name="ci" [(ngModel)]="form.ci" required></label>
+      <label>Nombre completo<input type="text" name="nombre_completo" [(ngModel)]="form.nombre_completo" required></label>
+      <label>Correo electrónico<input type="email" name="correo" [(ngModel)]="form.correo" required></label>
+      <label>Teléfono<input type="text" name="telefono" [(ngModel)]="form.telefono"></label>
+      <label style="display:flex;gap:.5rem;align-items:center;"><input type="checkbox" name="es_estudiante_ucb" [(ngModel)]="form.es_estudiante_ucb" style="width:auto;"> Soy estudiante UCB</label>
+      <button type="submit" class="btn-hero-primary" style="border:none;cursor:pointer;">Confirmar reserva</button>
+      <p *ngIf="resMsg" id="registro-msg" [style.color]="resOk ? 'var(--color-gold-light)' : '#ff8080'">{{ resMsg }}</p>
+      <div *ngIf="resCodigo" class="widget-card" style="margin-top:1rem;">
+        <h3>Código de reserva</h3>
+        <p style="font-size:1.4rem;font-weight:700;color:var(--color-gold);">{{ resCodigo }}</p>
+        <p>Guarda este código para consultar el estado de tu reserva.</p>
+      </div>
+    </form>
+    <p *ngIf="loadingFunciones"><small>Cargando funciones disponibles...</small></p>
+  </section>
+
+  <section>
+    <h2>Consultar Reserva por Código</h2>
+    <form (ngSubmit)="consultar()" style="max-width:420px;display:flex;gap:.5rem;flex-wrap:wrap;align-items:end;">
+      <label style="flex:1;">Código<input type="text" name="codigo" [(ngModel)]="codigo" placeholder="BUCB-XXXX" required></label>
+      <button type="submit" class="btn-hero-secondary" style="cursor:pointer;">Consultar</button>
+    </form>
+    <p *ngIf="consultaMsg" style="color:#e0b0b0">{{ consultaMsg }}</p>
+    <div *ngIf="consulta" class="widget-card" style="margin-top:1rem;max-width:720px;">
+      <h3>Reserva {{ consulta.codigo_reserva || codigo }}</h3>
+      <p><strong>Estado:</strong> {{ consulta.estado }}</p>
+      <p><strong>Cantidad:</strong> {{ consulta.cantidad_entradas }}</p>
+      <p *ngIf="consulta.funcion"><strong>Función:</strong> {{ consulta.funcion.titulo || consulta.funcion.id_obra }} - {{ fmt(consulta.funcion.fecha_hora) }} ({{ consulta.funcion.lugar }})</p>
+      <p *ngIf="!consulta.funcion && consulta.fecha_hora"><strong>Fecha:</strong> {{ fmt(consulta.fecha_hora) }}</p>
+      <p *ngIf="consulta.espectador"><strong>Espectador:</strong> {{ consulta.espectador.nombre_completo }} ({{ consulta.espectador.correo }})</p>
+      <p *ngIf="!consulta.espectador && consulta.nombre_completo"><strong>Nombre:</strong> {{ consulta.nombre_completo }}</p>
+    </div>
+  </section>
+</div>

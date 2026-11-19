@@ -1,0 +1,22 @@
+<section style="max-width:720px;margin:0 auto;">
+  <h2>Mi Perfil</h2>
+  <div *ngIf="!auth.token()">
+    <p>Debes iniciar sesión para ver tu perfil.</p>
+    <a routerLink="/login" class="btn-hero-primary">Ir a login</a>
+  </div>
+  <ng-container *ngIf="auth.token()">
+    <p *ngIf="loading">Cargando perfil...</p>
+    <p *ngIf="error" style="color:#e0b0b0;">{{ error }}</p>
+    <div *ngIf="!loading && !error" class="widget-card">
+      <h3>Datos de la cuenta</h3>
+      <p><strong>Email:</strong> {{ perfil.email || auth.user()?.email || '-' }}</p>
+      <p *ngIf="perfil.rol || auth.user()?.rol"><strong>Rol:</strong> {{ perfil.rol || auth.user()?.rol }}</p>
+      <p *ngIf="perfil.id || perfil.id_usuario"><strong>ID:</strong> {{ perfil.id || perfil.id_usuario }}</p>
+      <pre *ngIf="raw" style="margin-top:1rem;white-space:pre-wrap;font-size:.85rem;color:var(--text-secondary);">{{ raw }}</pre>
+      <div style="margin-top:1rem;display:flex;gap:.5rem;">
+        <button class="btn-hero-secondary" style="cursor:pointer;" (click)="load()">Actualizar</button>
+        <button class="btn-hero-primary" style="border:none;cursor:pointer;" (click)="doLogout()">Cerrar sesión</button>
+      </div>
+    </div>
+  </ng-container>
+</section>

@@ -1,0 +1,27 @@
+<section>
+  <h2>Elenco del Ballet UCB</h2>
+  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin:1rem 0;align-items:end;">
+    <label>Rol
+      <select [(ngModel)]="rol">
+        <option value="">Todos</option>
+        <option value="solista">Solista</option>
+        <option value="cuerpo_de_ballet">Cuerpo de ballet</option>
+        <option value="director">Director</option>
+        <option value="maestro">Maestro</option>
+      </select>
+    </label>
+    <button class="btn-hero-primary" style="border:none;cursor:pointer;padding:.5rem 1rem;" (click)="load()">Filtrar</button>
+  </div>
+  <p *ngIf="loading">Cargando elenco...</p>
+  <p *ngIf="error" style="color:#e0b0b0;">{{ error }}</p>
+  <div *ngIf="!loading && !error" class="grid-layout grid-3-cols">
+    <article class="card" *ngFor="let m of elenco">
+      <img *ngIf="m.fotografia_url" [src]="m.fotografia_url" [alt]="m.nombre_completo" style="width:100%;height:260px;object-fit:cover;border-radius:8px;margin-bottom:.5rem;">
+      <h3>{{ m.nombre_completo }}</h3>
+      <p><strong>Rol:</strong> {{ formatRol(m.rol) }}</p>
+      <p>{{ m.biografia || 'Integrante del elenco del Ballet UCB.' }}</p>
+      <p><small>{{ m.activo === false ? 'Inactivo' : 'Activo' }}</small></p>
+    </article>
+    <p *ngIf="!elenco.length">No se encontraron integrantes.</p>
+  </div>
+</section>

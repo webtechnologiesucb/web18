@@ -1,0 +1,15 @@
+<section>
+  <h2>Noticias del Ballet UCB</h2>
+  <p *ngIf="loading">Cargando noticias...</p>
+  <p *ngIf="error" style="color:#e0b0b0;">{{ error }}</p>
+  <div *ngIf="!loading && !error" class="grid-layout grid-2-cols">
+    <article class="card" *ngFor="let n of noticias">
+      <img *ngIf="n.imagen_url" [src]="n.imagen_url" [alt]="n.titulo" style="width:100%;max-height:220px;object-fit:cover;border-radius:8px;margin-bottom:.75rem;">
+      <h3>{{ n.titulo }}</h3>
+      <p *ngIf="n.destacado"><small style="color:var(--color-gold);">★ Destacado</small></p>
+      <p>{{ resumen(n.contenido) }}</p>
+      <a *ngIf="n.slug" [routerLink]="['/noticias', n.slug]" class="btn-hero-primary" style="display:inline-flex;margin-top:.5rem;border:none;font-size:.9rem;padding:.45rem 1rem;">Leer noticia</a>
+    </article>
+    <p *ngIf="!noticias.length">No hay noticias disponibles.</p>
+  </div>
+</section>

@@ -1,0 +1,35 @@
+<div>
+  <section>
+    <h2>Convocatorias</h2>
+    <p *ngIf="loading">Cargando convocatorias...</p>
+    <p *ngIf="error" style="color:#e0b0b0;">{{ error }}</p>
+    <div *ngIf="!loading && !error" class="grid-layout grid-2-cols">
+      <article class="card" *ngFor="let c of convocatorias">
+        <h3>{{ c.titulo }}</h3>
+        <p><strong>Estado:</strong> {{ c.estado || '-' }}</p>
+        <p><strong>Inicio:</strong> {{ fmt(c.fecha_inicio) }} &nbsp; <strong>Fin:</strong> {{ fmt(c.fecha_fin) }}</p>
+        <p>{{ c.requisitos || 'Consulta los requisitos con la dirección.' }}</p>
+        <p *ngIf="c.total_postulaciones != null"><small>Postulaciones: {{ c.total_postulaciones }}</small></p>
+        <button class="btn-hero-primary" style="border:none;cursor:pointer;margin-top:.5rem;padding:.45rem 1rem;" (click)="seleccionar(c)">Postularme</button>
+      </article>
+      <p *ngIf="!convocatorias.length">No hay convocatorias disponibles.</p>
+    </div>
+  </section>
+
+  <section id="form-postulacion" *ngIf="seleccionada">
+    <h2>Formulario de Postulación</h2>
+    <p>Convocatoria: <strong>{{ seleccionada.titulo }}</strong> (ID {{ cId(seleccionada) }})</p>
+    <form (ngSubmit)="enviar()" #postForm="ngForm" style="max-width:620px;">
+      <label>Nombre completo<input type="text" name="nombre_completo" [(ngModel)]="form.nombre_completo" required></label>
+      <label>CI<input type="text" name="ci" [(ngModel)]="form.ci" required></label>
+      <label>Correo electrónico<input type="email" name="email" [(ngModel)]="form.email" required></label>
+      <label>Teléfono<input type="text" name="telefono" [(ngModel)]="form.telefono" required></label>
+      <label>Carrera UCB<input type="text" name="carrera_ucb" [(ngModel)]="form.carrera_ucb"></label>
+      <label>Años de experiencia<input type="number" min="0" name="experiencia_anios" [(ngModel)]="form.experiencia_anios"></label>
+      <label>Estilo de danza<input type="text" name="estilo_danza" [(ngModel)]="form.estilo_danza" placeholder="Clásico, contemporáneo, folklórico..."></label>
+      <label>Link video demo<input type="url" name="link_video_demo" [(ngModel)]="form.link_video_demo" placeholder="https://..."></label>
+      <button type="submit" class="btn-hero-primary" style="border:none;cursor:pointer;">Enviar postulación</button>
+      <p *ngIf="msg" id="registro-msg" [style.color]="msgOk ? 'var(--color-gold-light)' : '#ff8080'">{{ msg }}</p>
+    </form>
+  </section>
+</div>

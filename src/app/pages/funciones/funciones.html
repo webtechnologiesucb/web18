@@ -1,0 +1,49 @@
+<div>
+  <section>
+    <h2>Funciones Programadas</h2>
+    <p>Consulta las próximas presentaciones del Ballet UCB (datos desde la API).</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin:1rem 0;align-items:end;">
+      <label>Estado
+        <select [(ngModel)]="estado">
+          <option value="">Todos</option>
+          <option value="programada">Programada</option>
+          <option value="agotada">Agotada</option>
+          <option value="cancelada">Cancelada</option>
+          <option value="finalizada">Finalizada</option>
+        </select>
+      </label>
+      <button class="btn-hero-primary" style="border:none;cursor:pointer;padding:.5rem 1rem;" (click)="load()">Filtrar</button>
+    </div>
+    <p *ngIf="loading">Cargando funciones...</p>
+    <p *ngIf="error" style="color:#e0b0b0;">{{ error }}</p>
+    <div *ngIf="!loading && !error" class="table-responsive">
+      <table>
+        <thead><tr><th>ID</th><th>Obra</th><th>Fecha y hora</th><th>Lugar</th><th>Capacidad</th><th>Estado</th><th></th></tr></thead>
+        <tbody>
+          <tr *ngFor="let f of funciones">
+            <td>{{ fId(f) }}</td>
+            <td>{{ f.titulo || f.obra?.titulo || f.id_obra }}</td>
+            <td>{{ formatFecha(f.fecha_hora) }}</td>
+            <td>{{ f.lugar || '-' }}</td>
+            <td>{{ f.capacidad_total ?? '-' }}</td>
+            <td>{{ f.estado || '-' }}</td>
+            <td><a routerLink="/reservas" class="btn-hero-secondary" style="font-size:.8rem;padding:.3rem .7rem;">Reservar</a></td>
+          </tr>
+          <tr *ngIf="!funciones.length"><td colspan="7">No hay funciones para los filtros seleccionados.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Obras del Repertorio</h2>
+    <p *ngIf="loadingObras">Cargando obras...</p>
+    <div *ngIf="!loadingObras" class="grid-layout grid-3-cols">
+      <article class="card" *ngFor="let o of obras">
+        <h3>{{ o.titulo }}</h3>
+        <p>{{ o.descripcion || 'Sin descripción.' }}</p>
+        <a [routerLink]="['/obras', oId(o)]" style="color:var(--color-gold);">Ver funciones de la obra →</a>
+      </article>
+    </div>
+  </section>
+</div>

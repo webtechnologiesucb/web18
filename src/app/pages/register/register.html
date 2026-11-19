@@ -1,0 +1,17 @@
+<section style="max-width:520px;margin:0 auto;">
+  <h2>Crear Cuenta</h2>
+  <p>Regístrate como espectador o postulante.</p>
+  <form (ngSubmit)="onSubmit()" #regForm="ngForm">
+    <label>Correo electrónico<input type="email" name="email" [(ngModel)]="email" required></label>
+    <label>Contraseña<input type="password" name="password" [(ngModel)]="password" required minlength="6"></label>
+    <label>Rol
+      <select name="rol" [(ngModel)]="rol">
+        <option value="espectador">Espectador</option>
+        <option value="postulante">Postulante</option>
+      </select>
+    </label>
+    <button type="submit" class="btn-hero-primary" style="border:none;cursor:pointer;">Registrarme</button>
+    <p *ngIf="msg" [style.color]="ok ? 'var(--color-gold-light)' : '#ff8080'" style="margin-top:.75rem;">{{ msg }}</p>
+  </form>
+  <p style="margin-top:1rem;">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
+</section>

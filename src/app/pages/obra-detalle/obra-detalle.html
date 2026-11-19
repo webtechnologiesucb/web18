@@ -1,0 +1,27 @@
+<section>
+  <p><a routerLink="/funciones">← Volver a funciones</a></p>
+  <p *ngIf="loading">Cargando obra...</p>
+  <p *ngIf="error" style="color:#e0b0b0;">{{ error }}</p>
+  <article *ngIf="!loading && !error && obra">
+    <h2>{{ obra.titulo }}</h2>
+    <img *ngIf="obra.imagen_banner" [src]="obra.imagen_banner" [alt]="obra.titulo" style="width:100%;max-height:420px;object-fit:cover;border-radius:12px;margin:1rem 0;">
+    <p>{{ obra.descripcion || 'Sin descripción.' }}</p>
+    <p *ngIf="obra.director"><strong>Director:</strong> {{ obra.director }}</p>
+
+    <h3 style="margin-top:2rem;">Funciones programadas</h3>
+    <div class="table-responsive" *ngIf="funciones.length">
+      <table>
+        <thead><tr><th>Fecha y hora</th><th>Lugar</th><th>Capacidad</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let f of funciones">
+            <td>{{ formatFecha(f.fecha_hora) }}</td>
+            <td>{{ f.lugar || '-' }}</td>
+            <td>{{ f.capacidad_total ?? '-' }}</td>
+            <td>{{ f.estado || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p *ngIf="!funciones.length">No hay funciones registradas para esta obra.</p>
+  </article>
+</section>

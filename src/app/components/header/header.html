@@ -1,0 +1,28 @@
+<header role="banner" class="animate-header">
+  <div class="header-top">
+    <div class="header-titles">
+      <h1><a routerLink="/" style="text-decoration:none;color:inherit;">Ballet UCB</a></h1>
+      <p><small>Universidad Católica Boliviana "San Pablo" | La Paz - Bolivia</small></p>
+    </div>
+    <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+      <button id="theme-toggle" class="theme-toggle-btn" type="button" (click)="toggleTheme()" aria-label="Cambiar tema">
+        <span>{{ isLight ? '☀️' : '🌙' }}</span> <span>{{ isLight ? 'Modo Claro' : 'Modo Oscuro' }}</span>
+      </button>
+      <a *ngIf="!auth.user()" routerLink="/login" class="theme-toggle-btn" style="text-decoration:none;">Ingresar</a>
+      <a *ngIf="auth.user()" routerLink="/perfil" class="theme-toggle-btn" style="text-decoration:none;">{{ auth.user()?.email || 'Mi perfil' }}</a>
+    </div>
+  </div>
+  <nav aria-label="Navegación principal del sitio" [class.is-open]="navOpen">
+    <button type="button" class="nav-toggle" aria-label="Abrir menú" [attr.aria-expanded]="navOpen" (click)="navOpen=!navOpen">
+      <span class="nav-bars"><span></span><span></span><span></span></span> Menú
+    </button>
+    <ul>
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="navOpen=false">Inicio</a></li>
+      <li><a routerLink="/noticias" routerLinkActive="active" (click)="navOpen=false">Noticias</a></li>
+      <li><a routerLink="/funciones" routerLinkActive="active" (click)="navOpen=false">Funciones</a></li>
+      <li><a routerLink="/elenco" routerLinkActive="active" (click)="navOpen=false">Elenco</a></li>
+      <li><a routerLink="/convocatorias" routerLinkActive="active" (click)="navOpen=false">Convocatorias</a></li>
+      <li><a routerLink="/reservas" routerLinkActive="active" (click)="navOpen=false">Reservas</a></li>
+    </ul>
+  </nav>
+</header>
